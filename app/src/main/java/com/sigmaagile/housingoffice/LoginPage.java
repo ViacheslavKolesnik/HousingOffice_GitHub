@@ -1,15 +1,24 @@
 package com.sigmaagile.housingoffice;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+
+import java.util.ArrayList;
 
 public class LoginPage extends AppCompatActivity {
-
+    private ArrayList<Account> list;
+    public boolean isinlist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        list = new ArrayList<>();
+        list.add(new Account("Valera","valera123"));
+        list.add(new Account("Vasia","vasia123"));
         setContentView(R.layout.activity_login_page);
     }
 
@@ -33,5 +42,28 @@ public class LoginPage extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    public void onAdressee(View view){
+        isinlist=false;
+        String l=((EditText)findViewById(R.id.editText)).getText().toString();
+        String l2=((EditText)findViewById(R.id.editText2)).getText().toString();
+        for (int i = 0; i < list.size(); i++) {
+            if((l.equals(list.get(i).login))&&l2.equals(list.get(i).password)){
+                isinlist=true;
+                break;
+            }
+        }
+        if(isinlist) {
+            Intent intent = new Intent(this, Adressee.class);
+            startActivity(intent);
+        }
+    }
+}
+class Account{
+    public String login;
+    public String password;
+    Account(String s, String p){
+        login=s;
+        password=p;
     }
 }

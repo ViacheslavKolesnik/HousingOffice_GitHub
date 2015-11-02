@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">HousingOffice</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Hello adressee!</string>
     <string name="action_settings">Settings</string>
+    <string name="login_text">Worker</string>
+    <string name="login_text_field">Log in</string>
+    <string name="login_password">Password</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="title_activity_adressee">Adressee</string>
 </resources>
