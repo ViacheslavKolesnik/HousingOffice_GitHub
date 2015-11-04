@@ -7,15 +7,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class LoginPage extends AppCompatActivity {
     private ArrayList<Account> list;
     public boolean isinlist;
+    public boolean iscorrectpassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        iscorrectpassword=true;
         list = new ArrayList<>();
         list.add(new Account("Valera","valera123"));
         list.add(new Account("Vasia","vasia123"));
@@ -44,18 +47,26 @@ public class LoginPage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void onAdressee(View view){
+        iscorrectpassword=false;
         isinlist=false;
         String l=((EditText)findViewById(R.id.editText)).getText().toString();
         String l2=((EditText)findViewById(R.id.editText2)).getText().toString();
         for (int i = 0; i < list.size(); i++) {
             if((l.equals(list.get(i).login))&&l2.equals(list.get(i).password)){
                 isinlist=true;
+                iscorrectpassword=true;
                 break;
             }
         }
         if(isinlist) {
             Intent intent = new Intent(this, Adressee.class);
             startActivity(intent);
+        }
+        if(!iscorrectpassword){
+            ((TextView) findViewById(R.id.textView2)).setText("Incorrect login or password");
+        }
+        else{
+            ((TextView) findViewById(R.id.textView2)).setText("");
         }
     }
 }
