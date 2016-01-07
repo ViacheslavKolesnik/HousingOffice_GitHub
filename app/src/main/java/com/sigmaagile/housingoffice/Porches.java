@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -18,30 +16,28 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
-public class Adressee extends AppCompatActivity {
+public class Porches extends AppCompatActivity {
     private static final String dburl = "jdbc:jtds:sqlserver://houseProject.mssql.somee.com";
     private static final String dbuser = "hagtyde_SQLLogin_1";
     private static final String dbpassword = "nblhstmj3e";
-    ArrayList<String> numbers = new ArrayList<>();
-    public static ArrayList<Integer> sendId = new ArrayList<>();
-    public static ArrayList<Integer> HauseId = new ArrayList<>();
+    ArrayList<String> name=new ArrayList<>();
+    public static ArrayList<Integer> IDPorches=new ArrayList<>();
+    public static  ArrayList<Integer> sendId=new ArrayList<>();
+    ArrayList<Integer> IDHouses;
+    String id="(";
     ListView lvMain;
-    String id = "(";
-    ArrayList<Integer> IDStreets;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adressee);
-        IDStreets = Streets.sendId;//getIntent().getIntArrayExtra("ID");
+        setContentView(R.layout.activity_porches);
+        IDHouses= Adressee.sendId;
         lvMain = (ListView) findViewById(R.id.lvMain);
         // устанавливаем режим выбора пунктов списка
         lvMain.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         // Создаем адаптер, используя массив из файла ресурсов
-        for (int i = 0; i < IDStreets.size(); i++) {
-            if (i == 0) id += IDStreets.get(i) + "";
-            else id += ", " + IDStreets.get(i);
+        for (int i = 0; i < IDHouses.size(); i++) {
+            if (i == 0) id += IDHouses.get(i) + "";
+            else id += ", " + IDHouses.get(i);
         }
         id += ")";
         Thread d = new Thread(new Runnable() {
@@ -51,8 +47,8 @@ public class Adressee extends AppCompatActivity {
                 Statement stmt = null;
                 ResultSet rs = null;
 
-                String query = "SELECT * FROM Houses WHERE StreetId IN" + id;
-                Log.d("myLog", "---------------------------------------------------IDStreet=" + id);
+                String query = "SELECT * FROM Porches WHERE HouseId IN" + id;
+                Log.d("myLog", "---------------------------------------------------IDHauses=" + id);
                 Log.d("myLog", "---------------------------------------------------3");
                 try {
                     // opening database connection to MySQL server
@@ -66,10 +62,10 @@ public class Adressee extends AppCompatActivity {
                     Log.d("myLog", "---------------------------------------------------6");
                     while (rs.next()) {
                         Log.d("myLog", "--------------------------------------------------ITERATION");
-                        int number = rs.getInt("HouseNumber");
-                        numbers.add(number+"");
-                        int iD = rs.getInt("HouseId");
-                        HauseId.add(iD);
+                        int number = rs.getInt("PorchNumber");
+                        name.add(number + "");
+                        int iD = rs.getInt("PorchId");
+                        IDPorches.add(iD);
                         //list.add(new House(iD,number));
                         Log.d("myLog", "---------------------------------------------------number" + number + "ID" + iD);
                     }
@@ -110,33 +106,10 @@ public class Adressee extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Adressee.this, android.R.layout.simple_list_item_multiple_choice, numbers);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Porches.this, android.R.layout.simple_list_item_multiple_choice, name);
         lvMain.setAdapter(adapter);
         Log.d("myLog", "---------------------------------------------------8");
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_adressee, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void Next(View view) {
         sendId.clear();
         SparseBooleanArray sbArray = lvMain.getCheckedItemPositions();
@@ -144,26 +117,17 @@ public class Adressee extends AppCompatActivity {
             Log.d("myLog", "---------------------------------------------------9");
             int key = sbArray.keyAt(i);
             if (sbArray.get(key)) {
-                sendId.add(HauseId.get(key));
-                Log.d("myLog", "---------------------------------------------------11  " + HauseId.get(key));
+                sendId.add(IDPorches.get(key));
+                Log.d("myLog", "---------------------------------------------------11  " + IDPorches.get(key));
             }
-            Intent intent = new Intent(this, Porches.class);
+            Intent intent = new Intent(this, Apartment.class);
             startActivity(intent);
         }
     }
     public int cd=1;
     public void All(View view){
-        if(cd%2!=0) for (int i=0;i<HauseId.size();i++) lvMain.setItemChecked(i,true);
-        else for (int i=0;i<HauseId.size();i++) lvMain.setItemChecked(i,false);
+        if(cd%2!=0) for (int i=0;i<IDPorches.size();i++) lvMain.setItemChecked(i,true);
+        else for (int i=0;i<IDPorches.size();i++) lvMain.setItemChecked(i,false);
         cd++;
-    }
-}
-
-class House{
-    public int Hauseid;
-    public int Hausenumber;
-    public House(int Hid,int Hnumb){
-        Hauseid=Hid;
-        Hausenumber=Hnumb;
     }
 }
