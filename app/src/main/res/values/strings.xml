@@ -8,4 +8,6 @@
     <string name="login_password">Password</string>
     <string name="login_sign_in">Sign in</string>
     <string name="title_activity_adressee">Adressee</string>
+    <string name="title_activity_time">Time</string>
+    <string name="title_activity_confirmation">Confirmation</string>
 </resources>

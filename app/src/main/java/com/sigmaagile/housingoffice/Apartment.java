@@ -125,7 +125,7 @@ public class Apartment extends AppCompatActivity {
                 sendemail.add(email.get(key));
                 Log.d("myLog", "---------------------------------------------------11  " + IDApartaments.get(key));
             }
-            Intent intent = new Intent(this, Send.class);
+            Intent intent = new Intent(this, Template.class);
             startActivity(intent);
         }
     }

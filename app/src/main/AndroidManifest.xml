@@ -30,9 +30,17 @@
         </activity>
         <activity android:name=".Apartment" >
         </activity>
-        <activity android:name=".Send" >
+        <activity android:name=".Template" >
         </activity>
         <activity android:name=".Return" >
+        </activity>
+        <activity
+            android:name=".Time"
+            android:label="@string/title_activity_time" >
+        </activity>
+        <activity
+            android:name=".Confirmation"
+            android:label="@string/title_activity_confirmation" >
         </activity>
     </application>
 

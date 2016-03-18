@@ -1,0 +1,125 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Accident type"
+        android:id="@+id/textView5"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/editTextCause"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/textView6"
+        android:layout_alignLeft="@+id/checkBoxOther"
+        android:layout_alignStart="@+id/checkBoxOther"
+        android:layout_alignRight="@+id/checkBoxColdW"
+        android:layout_alignEnd="@+id/checkBoxColdW" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:id="@+id/buttonDate"
+        android:onClick="Next"
+        android:background="#1AA4FF"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/editTextCause"
+        android:layout_alignStart="@+id/editTextCause"
+        android:layout_alignRight="@+id/checkBoxColdW"
+        android:layout_alignEnd="@+id/checkBoxColdW"
+        android:layout_marginBottom="20dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gas"
+        android:id="@+id/checkBoxGas"
+        android:layout_marginLeft="34dp"
+        android:layout_marginStart="34dp"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="34dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hot water"
+        android:id="@+id/checkBoxHotW"
+        android:layout_alignTop="@+id/checkBoxGas"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="35dp"
+        android:layout_marginEnd="35dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Heating"
+        android:id="@+id/checkBoxHeating"
+        android:layout_below="@+id/checkBoxGas"
+        android:layout_alignLeft="@+id/checkBoxGas"
+        android:layout_alignStart="@+id/checkBoxGas" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cold water"
+        android:id="@+id/checkBoxColdW"
+        android:layout_below="@+id/checkBoxHotW"
+        android:layout_alignLeft="@+id/checkBoxHotW"
+        android:layout_alignStart="@+id/checkBoxHotW" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Electricity"
+        android:id="@+id/checkBoxElectricity"
+        android:layout_below="@+id/checkBoxHeating"
+        android:layout_centerHorizontal="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBoxOther"
+        android:layout_alignBottom="@+id/editTextOther"
+        android:layout_alignLeft="@+id/checkBoxHeating"
+        android:layout_alignStart="@+id/checkBoxHeating" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextOther"
+        android:hint="Other"
+        android:layout_below="@+id/checkBoxElectricity"
+        android:layout_alignRight="@+id/checkBoxColdW"
+        android:layout_alignEnd="@+id/checkBoxColdW"
+        android:layout_toRightOf="@+id/checkBoxOther"
+        android:layout_toEndOf="@+id/checkBoxOther"
+        android:minLines="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Accident cause"
+        android:id="@+id/textView6"
+        android:layout_below="@+id/editTextOther"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+</RelativeLayout>

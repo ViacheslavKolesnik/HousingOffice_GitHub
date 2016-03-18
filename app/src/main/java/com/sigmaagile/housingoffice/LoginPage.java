@@ -1,6 +1,7 @@
 package com.sigmaagile.housingoffice;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +11,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,75 +30,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class LoginPage extends AppCompatActivity {
-    private static final String dburl = "jdbc:jtds:sqlserver://houseProject.mssql.somee.com";
-    private static final String dbuser = "hagtyde_SQLLogin_1";
-    private static final String dbpassword = "nblhstmj3e";
+    HttpClient httpclient = new DefaultHttpClient();
+    ResponseHandler response = new BasicResponseHandler();
+    HttpGet httpget ;
+
+
     public static ArrayList<Account> list;
     public boolean isinlist;
     public boolean correctdata;
     public int ID;
+
+
+    String line;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try{
-            DriverManager.registerDriver(new net.sourceforge.jtds.jdbc.Driver());
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        correctdata=true;
-        list = new ArrayList<>();
         setContentView(R.layout.activity_login_page);
-        new Thread(new Runnable(){
-            public void run(){
-                Connection con=null;
-                Statement stmt=null;
-                ResultSet rs=null;
-                String query = "select * from SubRegions";
-                try {
-                    // opening database connection to MySQL server
-                    con = DriverManager.getConnection(dburl, dbuser, dbpassword);
-                    // getting Statement object to execute query
-                    stmt = con.createStatement();
-
-                    // executing SELECT query
-                    rs = stmt.executeQuery(query);
-                    while (rs.next()) {
-                        String name = rs.getString("Name");
-                        int ID=rs.getInt("SubRegionId");
-                        String  password=rs.getString("Password");
-                        list.add(new Account(name,password,ID));
-                    }
-                } catch (SQLException sqlEx) {
-                    sqlEx.printStackTrace();
-                } finally {
-                    //close connection ,stmt and resultset here
-                    try {
-                        con.close();
-                    } catch(SQLException se) {
-                        se.printStackTrace();
-                    }
-                    catch(NullPointerException ex){
-                        ex.printStackTrace();
-                    }
-                    try {
-                        stmt.close();
-                    } catch(SQLException se) {
-                        se.printStackTrace();
-                    }
-                    catch(NullPointerException ex){
-                        ex.printStackTrace();
-                    }
-                    try {
-                        rs.close();
-                    } catch(SQLException se) {
-                        se.printStackTrace();
-                    }
-                    catch(NullPointerException ex){
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        }).start();
+        line="";
     }
 
     @Override
@@ -115,34 +75,35 @@ public class LoginPage extends AppCompatActivity {
         correctdata=false;
         isinlist=false;
 
-        //EditText tt1 = (EditText) findViewById(R.id.editText);
-        //tt1.setText(list.get(0).login);
-        //EditText tt2 = (EditText) findViewById(R.id.editText2);
-        //tt2.setText(list.get(0).password);
-        String l=((EditText)findViewById(R.id.editText)).getText().toString();
-        String l2=((EditText)findViewById(R.id.editText2)).getText().toString();
-        for (int i = 0; i < list.size(); i++) {
-            Log.d("myLogs",i+"-----"+list.get(i).login);
-            if((l.compareTo(list.get(i).login))==0&&l2.compareTo(list.get(i).password)==0){
-                isinlist=true;
-                correctdata=true;
-                ID=list.get(i).id;
-                Log.d("myLogs",list.get(i).id+"");
-                break;
-            }
-        }
+        final String llogin=((EditText)findViewById(R.id.editText)).getText().toString();
+        final String ppassword=((EditText)findViewById(R.id.editText2)).getText().toString();
 
-        if(isinlist) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                    try {
+                        httpget = new HttpGet("http://house-utilities-api.azurewebsites.net/api/login/getkey/log="+llogin+",pas="+ppassword);
+                        Log.d("MyTag", "запрос отправлен");
+                        line = httpclient.execute(httpget, response).toString();
+                    }
+                    catch (ClientProtocolException e) {
+                        Log.d("MyTag", "ошибочка");
+                    }
+                    catch (IOException e) {
+                        Log.d("MyTag", "запрос не отправлен");
+                    }
+            }
+        }).start();
+        if(line.equals("\"314\"")) {
             Intent intent = new Intent(this, Streets.class);
-            Log.d("my Logs",ID+"");
-            intent.putExtra("ID",ID);
+            //Log.d("my Logs",ID+"");
+            //intent.putExtra("ID", ID);
             startActivity(intent);
-        }
-        if(!correctdata){
-            ((TextView) findViewById(R.id.textView2)).setText("Incorrect login or password");
+            ((TextView) findViewById(R.id.textView2)).setText("");
         }
         else{
-            ((TextView) findViewById(R.id.textView2)).setText("");
+            ((TextView) findViewById(R.id.textView2)).setText("Incorrect login or password");
         }
     }
 }
